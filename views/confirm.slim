@@ -1,0 +1,24 @@
+dl
+  dt お名前
+  dd #{@registrant}
+  dt 体重変化
+  dd 
+    span #{@weightBefore}kg 
+    span.glyphicon.glyphicon-arrow-right aria-hidden="true"
+    span &nbsp;#{@weightAfter}kg
+  dt 目標
+  dd ±#{@goal} %
+  dt 増減率
+  dd #{@percentage.round(2)} %
+  dt 達成率
+  dd #{@acheivement.round(2)} %
+  dt スコア
+  dd #{@score.round(2)}
+.alert.alert-info.centor role="alert" システムにはお名前と達成率、スコアが登録されます。
+form method="POST" action="/entry"
+  input#registrant type="hidden" value="#{@registrant}" name="registrant"
+  input#acheivement type="hidden" value="#{@acheivement}" name="acheivement"
+  input#score type="hidden" value="#{@score}" name="score"
+  .btn-group role="group"
+    a.btn.btn-warning#cancel href="/entry" キャンセル
+    button.btn.btn-success type="submit" 登録する

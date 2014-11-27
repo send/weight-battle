@@ -1,0 +1,10 @@
+---
+  environment: development
+  chdir: /Users/kazuaki/repos/serp-new/
+  pid: /Users/kazuaki/repos/serp-new/tmp
+  rackup: /Users/kazuaki/repos/serp-new/config.ru
+  log: /Users/kazuaki/repos/serp-new/log
+  port: 4567
+  max_conns: 1024
+  max_persistent_conns: 512
+  timeouts: 5

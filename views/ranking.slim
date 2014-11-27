@@ -1,0 +1,7 @@
+.h3 Top 5
+.row
+  - @ranking.all.each.with_index(1) do |row, index|
+    .col-lg-12
+      .col-lg-1.rank #{index}
+      .col-lg-5.name #{row.registrant}
+      .col-lg-5.acheivement #{row.acheivement.round(2)}%

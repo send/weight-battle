@@ -1,0 +1,18 @@
+development: &default
+  db_host: localhost
+  db_schema: weight_battle
+  db_user: root
+  db_password: ~
+  logging: true
+  log_file: ~
+  memcached: localhost:11211
+  expire_after: 3600
+staging:
+  <<: *default
+  logging: false
+  db_user: mysql
+  db_password: mysql
+production:
+  <<: *default
+  logging: false
+  expire_after: 2592000

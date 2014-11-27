@@ -1,0 +1,36 @@
+ruby:
+  def activate_current path
+    request.path_info == path ? {class: 'active'} : {}
+  end
+  BOOTSTRAP_BASE = "//netdna.bootstrapcdn.com/bootstrap/3.3.1"
+  JQUERY_BASE = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1"
+doctype 5
+html lang="ja"
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA=Compatible" content="IE=edge"
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    title #{@title}
+    link rel="stylesheet" href="#{BOOTSTRAP_BASE}/css/bootstrap.min.css"
+    link rel="stylesheet" href="/styles/application.css"
+    -# == yield_content :styles
+  body
+    .container
+      .header
+        nav
+          ul.nav.nav-pills.pull-right
+            li role="presentation" *activate_current("/")
+              a href="/" Home
+            -# li role="presentation" *activate_current("/entry")
+            -# a href="/entry" エントリー
+            li role="presentation" *activate_current("/ranking")
+              a href="/ranking" ランキング
+        h3.text-muted #{@title}
+      .main
+        == yield
+      .footer
+        #&copy; cul-de-sac
+    script src="#{JQUERY_BASE}/jquery.min.js"
+    script src="#{BOOTSTRAP_BASE}/js/bootstrap.min.js"
+    script src="/scripts/application.js"
+    -# == yield_content :scripts
