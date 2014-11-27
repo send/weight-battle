@@ -70,6 +70,7 @@ module WeightBattle
       @acheivement.registrant = params[:registrant]
       @acheivement.acheivement = params[:acheivement]
       @acheivement.score = params[:score]
+      @acheivement.updown = params[:updown]
       @acheivement.save
       redirect '/'
     end
@@ -79,6 +80,8 @@ module WeightBattle
       @weightBefore = params[:weightBefore].to_f
       @weightAfter = params[:weightAfter].to_f
       @percentage = (@weightAfter - @weightBefore)/@weightBefore * 100
+      @updown = 0
+      @updown = @percentage/@percentage.abs if @percentage != 0
       @goal = params[:sex].to_i == 1 ? 3.0 : 2.0
       @score = (1.0 - @percentage.abs / @goal) * 100
       @acheivement = (100 - @score).abs

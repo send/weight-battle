@@ -7,6 +7,7 @@ module WeightBattle::Model
         String :registrant, null: false, unique: true
         Float :acheivement, null: false
         Float :score, null: false
+        Int :updown, null: false, default: 0
         timestamp :updated_at, null: false
         timestamp :created_at, null: false
       end
