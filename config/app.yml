@@ -18,6 +18,7 @@ development: &default
       is_null: 性別を選択して下さい
     unkown: エラーが発生しました。再入力して下さい。
     is_not_digit: 数字で入力して下さい
+  app_name: 目標達成コンテスト
 staging:
   <<: *default
   logging: false

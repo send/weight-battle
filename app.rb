@@ -1,18 +1,15 @@
 $LOAD_PATH.push File.expand_path(__dir__ + '/lib')
 require 'logger'
 require 'validator'
+require 'active_support'
+require 'active_support/core_ext/hash'
+require 'active_support/hash_with_indifferent_access'
 
 Oj.default_options = {mode: :compat}
 module WeightBattle
 
-  # Test::Controller
   class Controller < Sinatra::Base
     register Sinatra::ConfigFile
-    register Sinatra::Namespace
-    helpers Sinatra::JSON
-    helpers Sinatra::ContentFor
-    enable :inline_templates
-
 
     set :environments, %w{development staging production}
     config_file __dir__ + '/config/app.yml'
@@ -57,7 +54,7 @@ module WeightBattle
     end
     
     before do
-      @title="目標達成コンテスト"
+      @title = settings.app_name
     end
 
     get '/' do
@@ -65,8 +62,8 @@ module WeightBattle
     end
 
     get '/entry/?' do
-      @message = Oj.load(session[:message] || '{}')
-      @params = Oj.load(session[:params] || '{}')
+      @message = (Oj.load(session[:message] || '{}')).with_indifferent_access
+      @params = (Oj.load(session[:params] || '{}')).with_indifferent_access
       slim :entry
     end
 
@@ -88,28 +85,28 @@ module WeightBattle
     post '/confirm' do
       session.delete(:message)
       session.delete(:params)
-      @errors = {}
-      msg = settings.message
-      @errors[:registrant] = msg['registrant']['is_null'] if params[:registrant].blank?
+      @errors = HashWithIndifferentAccess.new
+      msg = settings.message.with_indifferent_access
+      @errors[:registrant] = msg[:registrant][:is_null] if params[:registrant].blank?
       if params[:weightBefore].blank?
-        @errors[:weightBefore] = msg['weight_before']['is_null']
+        @errors[:weightBefore] = msg[:weight_before][:is_null]
       elsif !params[:weightBefore].float?
-        @errors[:weightBefore] = msg['is_not_digit']
+        @errors[:weightBefore] = msg[:is_not_digit]
       end
       if params[:weightAfter].blank?
-        @errors[:weightAfter] = msg['weight_after']['is_null']
+        @errors[:weightAfter] = msg[:weight_after][:is_null]
       elsif !params[:weightAfter].float?
-        @errors[:weightAfter] = msg['is_not_digit']
+        @errors[:weightAfter] = msg[:is_not_digit]
       end
       if params[:sex].blank? || !params[:sex].integer?
-        @errors[:sex] = msg['sex']['is_null']
+        @errors[:sex] = msg[:sex][:is_null]
       else
         sex = params[:sex].to_i
-        @errors[:sex] = msg['sex']['is_null'] if sex != 1 && sex != 2
+        @errors[:sex] = msg[:sex][:is_null] if sex != 1 && sex != 2
       end
+      session[:params] = Oj.dump(params)
       if @errors.size > 0
         session[:message] = Oj.dump(@errors)
-        session[:params] = Oj.dump(params)
         redirect back
       end
 
@@ -117,10 +114,10 @@ module WeightBattle
       @weightAfter = params[:weightAfter].to_f
       @updown =  @weightAfter <=> @weightBefore
       @registrant = params[:registrant]
-      @goal = sex == 1 ? 3.0 : 2.0
+      offset_rate = sex == 1 ? 3.0 : 2.0
       offset_to = @updown > 0 ? 1 : -1
-      @purpose = @weightBefore * (100 + @goal * offset_to) / 100
-      @acheivement = 100 - (@purpose - @weightAfter).abs / @purpose * 100
+      @mark = @weightBefore * (100 + offset_rate * offset_to) / 100
+      @acheivement = 100 - (@mark - @weightAfter).abs / @mark * 100
       slim :confirm
     end
 
@@ -128,7 +125,5 @@ module WeightBattle
       @ranking = Model::Acheivement.order(:acheivement.desc).limit(5)
       slim :ranking
     end
-
-
   end
 end

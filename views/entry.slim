@@ -1,30 +1,30 @@
 
 
 form method="POST" action="/confirm"
-  - unless @message['unknown'].blank?
-    .alert.alert-warning #{@message['unknown']}
+  - unless @message[:unknown].blank?
+    .alert.alert-warning #{@message[:unknown]}
   .form-group
-    - unless @message['registrant'].blank?
-      .alert.alert-warning #{@message['registrant']}
+    - unless @message[:registrant].blank?
+      .alert.alert-warning #{@message[:registrant]}
     label for="registrant" 名前
-    input.form-control#registrant name="registrant" type="text" value="#{@params['registrant']}"
+    input.form-control#registrant name="registrant" type="text" value="#{@params[:registrant]}"
   .form-group
-    - unless @message['sex'].blank?
-      .alert.alert-warning #{@message['sex']}
+    - unless @message[:sex].blank?
+      .alert.alert-warning #{@message[:sex]}
     .btn-group data-toggle="buttons"
-      - sex = @params['sex'].blank? ? 0 : params['sex'].to_i
+      - sex = @params[:sex].blank? ? 0 : params[:sex].to_i
       label.btn.btn-info class=(sex == 1 ? 'active' : '')
         input#male type="radio" name="sex" autocomplete="off" value="1" checked=(sex == 1 ? 'checked' : false) 男性
       label.btn.btn-info class=(sex == 2 ? 'active' : '')
         input#female type="radio" name="sex" autocomplete="off" value="2" checked=(sex == 2 ? 'checked' : false) 女性
   .form-group
-    - unless @message['weightBefore'].blank?
-      .alert.alert-warning #{@message['weightBefore']}
+    - unless @message[:weightBefore].blank?
+      .alert.alert-warning #{@message[:weightBefore]}
     label for="weightBefore" 開始時体重
-    input.form-control#weightBefore name="weightBefore" type="number" step="0.1" autocomplete="off" value="#{@params['weightBefore']}"
+    input.form-control#weightBefore name="weightBefore" type="number" step="0.1" autocomplete="off" value="#{@params[:weightBefore]}"
   .form-group
-    - unless @message['weightAfter'].blank?
-      .alert.alert-warning #{@message['weightAfter']}
+    - unless @message[:weightAfter].blank?
+      .alert.alert-warning #{@message[:weightAfter]}
     label for="weightAfter" 終了時体重
-    input.form-control#weightAfter name="weightAfter" type="number" step="0.1" autocomplete="off" value="#{params['weightAfter']}"
+    input.form-control#weightAfter name="weightAfter" type="number" step="0.1" autocomplete="off" value="#{params[:weightAfter]}"
   button.btn.btn-success type="submit" 確認する 
