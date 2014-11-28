@@ -6,17 +6,15 @@ dl
     span #{@weightBefore}kg 
     span.glyphicon.glyphicon-arrow-right aria-hidden="true"
     span &nbsp;#{@weightAfter}kg
+    span &nbsp;( #{(@weightAfter - @weightBefore).round(2)}kg )
   dt 目標
-  dd ±#{@goal} %
-  dt 増減率
-  dd #{@percentage.round(2)} %
+  dd #{@purpose.round(2)} kg
   dt 達成率
   dd #{@acheivement.round(2)} %
 .alert.alert-info.centor role="alert" システムにはお名前と達成率が記録されます。
 form method="POST" action="/entry"
   input#registrant type="hidden" value="#{@registrant}" name="registrant"
   input#acheivement type="hidden" value="#{@acheivement}" name="acheivement"
-  input#score type="hidden" value="#{@score}" name="score"
   input#updown type="hidden" value="#{@updown}" name="updown"
   .btn-group role="group"
     a.btn.btn-warning#cancel href="/entry" キャンセル

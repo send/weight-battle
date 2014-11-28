@@ -7,6 +7,17 @@ development: &default
   log_file: ~
   memcached: localhost:11211
   expire_after: 3600
+  message:
+    registrant:
+      is_null: お名前を入力して下さい。
+    weight_before:
+      is_null: 開始時体重を入力して下さい
+    weight_after:
+      is_null: 終了時体重を入力して下さい
+    sex:
+      is_null: 性別を選択して下さい
+    unkown: エラーが発生しました。再入力して下さい。
+    is_not_digit: 数字で入力して下さい
 staging:
   <<: *default
   logging: false

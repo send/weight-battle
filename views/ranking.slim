@@ -1,19 +1,19 @@
-table#ranking.table.table-striped
+table#ranking.table.table-striped.table-responsive
   caption 達成率 Top 5
   thead
     tr
-      th.index 順位
+      th.rank 順位
       th.name お名前
       th.acheivement 達成率
       th.updown 増減
   tbody
     - @ranking.all.each.with_index(1) do |row, index|
       tr
-        td.index
+        td.rank
           strong 第 #{index} 位
-        td.name #{row.registrant}
-        td.acheivement #{row.acheivement.round(2)}%
-        td.updown
+        td.rank-data.name class="rank-#{index}" #{row.registrant}
+        td.rank-data.acheivement class="rank-#{index}" #{row.acheivement.round(2)}%
+        td.rank-data.updown class="rank-#{index}"
           - if row.updown == 0
             span.glyphicon.glyphicon-arrow-right aria-hidden="true"
           - elsif row.updown == -1
@@ -21,3 +21,5 @@ table#ranking.table.table-striped
           - elsif row.updown == 1
             span.glyphicon.glyphicon-arrow-up aria-hidden="true"
 
+button.btn.pull-right#showButton
+  span.glyphicon.glyphicon-list
