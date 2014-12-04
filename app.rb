@@ -74,7 +74,9 @@ module WeightBattle
       @acheivement.acheivement = params[:acheivement]
       @acheivement.updown = params[:updown]
       unless @acheivement.valid?
-        session[:message] = Oj.dump({unknown: settings.message['unknown']})
+        logger.error("error occured: #{@acheivement.errors}")
+        logger.error("invalid data: #{@params}")
+        session[:message] = Oj.dump(@acheivement.errors)
         redirect '/entry'
       end
       @acheivement.save
@@ -98,6 +100,12 @@ module WeightBattle
       elsif !params[:weightAfter].float?
         @errors[:weightAfter] = msg[:is_not_digit]
       end
+      if params[:updown].blank? || !params[:updown].integer?
+        @errors[:updown] = msg[:updown][:is_null]
+      else
+        updown = params[:updown].to_i
+        @errors[:updown] = msg[:updown][:is_null] if updown != 1 && updown != -1
+      end
       if params[:sex].blank? || !params[:sex].integer?
         @errors[:sex] = msg[:sex][:is_null]
       else
@@ -110,14 +118,13 @@ module WeightBattle
         redirect back
       end
 
-      @weightBefore = params[:weightBefore].to_f
-      @weightAfter = params[:weightAfter].to_f
-      @updown =  @weightAfter <=> @weightBefore
+      @weight_before = params[:weightBefore].to_f
+      @weight_after = params[:weightAfter].to_f
+      @updown = updown
       @registrant = params[:registrant]
       offset_rate = sex == 1 ? 3.0 : 2.0
-      offset_to = @updown > 0 ? 1 : -1
-      @mark = @weightBefore * (100 + offset_rate * offset_to) / 100
-      @acheivement = 100 - (@mark - @weightAfter).abs / @mark * 100
+      @mark = @weight_before * (100 + offset_rate * updown) / 100
+      @acheivement = 100 - (@mark - @weight_after).abs / @mark * 100
       slim :confirm
     end
 

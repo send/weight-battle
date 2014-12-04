@@ -78,3 +78,6 @@ body {
     border-bottom: 0;
   }
 }
+.spacer {
+  margin: 0.2em;
+}

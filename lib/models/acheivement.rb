@@ -19,7 +19,7 @@ module WeightBattle::Model
       validates_presence [:registrant, :acheivement, :updown]
       validates_unique :registrant
       validates_numeric :acheivement
-      validates_includes [-1, 0, 1], :updown
+      validates_includes [-1, 1], :updown
     end
   end
 end

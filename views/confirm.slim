@@ -3,15 +3,17 @@ dl
   dd #{@registrant}
   dt 体重変化
   dd 
-    span #{@weightBefore}kg 
+    span #{@weight_before}kg 
     span.glyphicon.glyphicon-arrow-right aria-hidden="true"
-    span &nbsp;#{@weightAfter}kg
-    span &nbsp;( #{(@weightAfter - @weightBefore).round(2)}kg )
-  dt 目標
+    span &nbsp;#{@weight_after}kg
+    span &nbsp;( #{(@weight_after - @weight_before).round(2)}kg )
+  dt 目標増減
+  dd #{@updown > 1 ? "増加" : "減少"}
+  dt 目標体重
   dd #{@mark.round(2)} kg
   dt 達成率
-  dd #{@acheivement.round(2)} %
-.alert.alert-info.centor role="alert" システムにはお名前と達成率が記録されます。
+  dd #{@acheivement.round(2)} % (増減率: #{((@weight_after - @weight_before) / @weight_before * 100).round(2)} %)
+.alert.alert-info.centor role="alert" システムにはお名前と目標増減、達成率が記録されます。
 form method="POST" action="/entry"
   input#registrant type="hidden" value="#{@registrant}" name="registrant"
   input#acheivement type="hidden" value="#{@acheivement}" name="acheivement"

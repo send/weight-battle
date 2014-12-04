@@ -4,9 +4,9 @@ form method="POST" action="/confirm"
   - unless @message[:unknown].blank?
     .alert.alert-warning #{@message[:unknown]}
   .form-group
+    label for="registrant" お名前
     - unless @message[:registrant].blank?
       .alert.alert-warning #{@message[:registrant]}
-    label for="registrant" 名前
     input.form-control#registrant name="registrant" type="text" value="#{@params[:registrant]}"
   .form-group
     - unless @message[:sex].blank?
@@ -18,13 +18,27 @@ form method="POST" action="/confirm"
       label.btn.btn-info class=(sex == 2 ? 'active' : '')
         input#female type="radio" name="sex" autocomplete="off" value="2" checked=(sex == 2 ? 'checked' : false) 女性
   .form-group
+    - unless @message[:updown].blank?
+      .alert.alert-warning #{@message[:updown]}
+    label 目標は体重を
+    span.spacer
+    .btn-group data-toggle="buttons"
+      - updown = @params[:updown].blank? ? 0 : params[:updown].to_i
+      label.btn.btn-info class=(updown == 1 ? 'active' : '')
+        input#male type="radio" name="updown" autocomplete="off" value="1" checked=(updown == 1 ? 'checked' : false) 増やす
+      label.btn.btn-info class=(sex == -1 ? 'active' : '')
+        input#female type="radio" name="updown" autocomplete="off" value="-1" checked=(updown == -1 ? 'checked' : false) 減らす
+    span.spacer
+    span
+      strong こと
+  .form-group
+    label for="weightBefore" 開始時体重
     - unless @message[:weightBefore].blank?
       .alert.alert-warning #{@message[:weightBefore]}
-    label for="weightBefore" 開始時体重
     input.form-control#weightBefore name="weightBefore" type="number" step="0.1" autocomplete="off" value="#{@params[:weightBefore]}"
   .form-group
+    label for="weightAfter" 終了時体重
     - unless @message[:weightAfter].blank?
       .alert.alert-warning #{@message[:weightAfter]}
-    label for="weightAfter" 終了時体重
     input.form-control#weightAfter name="weightAfter" type="number" step="0.1" autocomplete="off" value="#{params[:weightAfter]}"
   button.btn.btn-success type="submit" 確認する 
